@@ -1,0 +1,18 @@
+Theo dõi khoá sau : https://www.youtube.com/watch?v=9SGDpanrc8U
+
+1. Setup 
+00:00 Intro
+01:00 Quick Word
+02:12 Spring Boot Overview
+03:44 Project Overview
+04:28 Spring Initializr
+08:05 IntelliJ
+10:29 Starting The Server
+    // Đây là đoạn connect db 
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-data-jpa</artifactId>
+    </dependency> 
+    
+    Khởi động SB : mvn spring-boot:run
+    Truy cập : Localhost:8080

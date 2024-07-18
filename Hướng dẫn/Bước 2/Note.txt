@@ -1,0 +1,42 @@
+Spring Boot cung cấp một cách tiện lợi để phát triển các ứng dụng Java bằng cách tự động cấu hình và đơn giản hóa việc thiết lập các cấu trúc cơ bản. Để hiểu tại sao khi bạn truy cập vào `localhost` lại in ra được "Hello World", chúng ta sẽ xem qua các phần chính trong đoạn mã của bạn:
+
+1. Annotation `@SpringBootApplication`:
+    ```java
+    @SpringBootApplication
+    ```
+    Annotation này bao gồm các annotation khác như `@Configuration`, `@EnableAutoConfiguration`, và `@ComponentScan`. Nó sẽ tự động cấu hình ứng dụng của bạn dựa trên các thư viện mà bạn đã thêm vào trong dự án.
+
+2. Annotation `@RestController`:
+    ```java
+    @RestController
+    ```
+    Annotation này thông báo cho Spring rằng lớp `DemoApplication` này sẽ xử lý các request HTTP và trả về dữ liệu trực tiếp thay vì một view (trong trường hợp của các ứng dụng web truyền thống).
+
+3. Method `main`:
+    ```java
+    public static void main(String[] args) {
+        SpringApplication.run(DemoApplication.class, args);
+    }
+    ```
+    Đây là điểm khởi đầu của ứng dụng Spring Boot. `SpringApplication.run()` sẽ khởi động ứng dụng Spring, tự động cấu hình, và tạo một context Spring Application.
+
+4. Annotation `@GetMapping`:
+    ```java
+    @GetMapping
+    ```
+    Annotation này ánh xạ các request HTTP GET đến method `hello`. Khi một request GET được gửi đến root URL ("/"), method này sẽ được gọi.
+
+5. Method `hello`:
+    ```java
+    public String hello() {
+        return "Hello World!";
+    }
+    ```
+    Method này đơn giản trả về chuỗi "Hello World!" khi được gọi.
+
+Vì vậy, khi bạn truy cập vào `http://localhost:8080` (mặc định Spring Boot sẽ chạy trên cổng 8080), Spring Boot sẽ:
+1. Khởi động ứng dụng và cấu hình tự động.
+2. Xác định rằng `DemoApplication` có một phương thức được ánh xạ tới request GET tại URL gốc ("/").
+3. Gọi method `hello()`, trả về "Hello World!".
+
+Đây là cách mà Spring Boot đơn giản hóa quá trình phát triển ứng dụng web, cho phép bạn tập trung vào logic kinh doanh thay vì cấu hình phức tạp.
