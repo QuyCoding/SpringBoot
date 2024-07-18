@@ -1,42 +1,93 @@
-Spring Boot cung cấp một cách tiện lợi để phát triển các ứng dụng Java bằng cách tự động cấu hình và đơn giản hóa việc thiết lập các cấu trúc cơ bản. Để hiểu tại sao khi bạn truy cập vào `localhost` lại in ra được "Hello World", chúng ta sẽ xem qua các phần chính trong đoạn mã của bạn:
+Trong Java, bạn có thể định nghĩa nhiều hàm (phương thức) với cùng tên nhưng với các tham số khác nhau. Đây là tính năng gọi là **overloading (nạp chồng phương thức)**. Nạp chồng phương thức cho phép bạn tạo nhiều phương thức trong cùng một lớp với cùng tên nhưng khác nhau về loại hoặc số lượng tham số.
 
-1. Annotation `@SpringBootApplication`:
-    ```java
-    @SpringBootApplication
-    ```
-    Annotation này bao gồm các annotation khác như `@Configuration`, `@EnableAutoConfiguration`, và `@ComponentScan`. Nó sẽ tự động cấu hình ứng dụng của bạn dựa trên các thư viện mà bạn đã thêm vào trong dự án.
+### Cách Overloading Phương Thức
 
-2. Annotation `@RestController`:
-    ```java
-    @RestController
-    ```
-    Annotation này thông báo cho Spring rằng lớp `DemoApplication` này sẽ xử lý các request HTTP và trả về dữ liệu trực tiếp thay vì một view (trong trường hợp của các ứng dụng web truyền thống).
+Khi sử dụng nạp chồng phương thức, phương thức phải khác nhau về:
+- **Số lượng tham số**: Các phương thức có thể có cùng tên nhưng khác nhau về số lượng tham số.
+- **Kiểu dữ liệu của tham số**: Các phương thức có thể có cùng tên nhưng khác nhau về kiểu dữ liệu của các tham số.
 
-3. Method `main`:
-    ```java
-    public static void main(String[] args) {
-        SpringApplication.run(DemoApplication.class, args);
+**Ví dụ về Overloading Phương Thức:**
+
+```java
+public class Calculator {
+
+    // Phương thức cộng hai số nguyên
+    public int add(int a, int b) {
+        return a + b;
     }
-    ```
-    Đây là điểm khởi đầu của ứng dụng Spring Boot. `SpringApplication.run()` sẽ khởi động ứng dụng Spring, tự động cấu hình, và tạo một context Spring Application.
 
-4. Annotation `@GetMapping`:
-    ```java
-    @GetMapping
-    ```
-    Annotation này ánh xạ các request HTTP GET đến method `hello`. Khi một request GET được gửi đến root URL ("/"), method này sẽ được gọi.
-
-5. Method `hello`:
-    ```java
-    public String hello() {
-        return "Hello World!";
+    // Phương thức cộng ba số nguyên
+    public int add(int a, int b, int c) {
+        return a + b + c;
     }
-    ```
-    Method này đơn giản trả về chuỗi "Hello World!" khi được gọi.
 
-Vì vậy, khi bạn truy cập vào `http://localhost:8080` (mặc định Spring Boot sẽ chạy trên cổng 8080), Spring Boot sẽ:
-1. Khởi động ứng dụng và cấu hình tự động.
-2. Xác định rằng `DemoApplication` có một phương thức được ánh xạ tới request GET tại URL gốc ("/").
-3. Gọi method `hello()`, trả về "Hello World!".
+    // Phương thức cộng hai số thực
+    public double add(double a, double b) {
+        return a + b;
+    }
+}
+```
 
-Đây là cách mà Spring Boot đơn giản hóa quá trình phát triển ứng dụng web, cho phép bạn tập trung vào logic kinh doanh thay vì cấu hình phức tạp.
+Trong ví dụ trên:
+- Phương thức `add` có ba phiên bản khác nhau:
+  - Một phiên bản nhận hai tham số kiểu `int`.
+  - Một phiên bản nhận ba tham số kiểu `int`.
+  - Một phiên bản nhận hai tham số kiểu `double`.
+
+### Quy tắc về Overloading
+
+1. **Tên phương thức phải giống nhau**: Các phương thức phải có cùng tên để có thể được nạp chồng.
+2. **Danh sách tham số phải khác nhau**: Danh sách tham số của các phương thức nạp chồng phải khác nhau về số lượng hoặc loại tham số.
+3. **Trả về kiểu không phải là yếu tố phân biệt**: Phương thức không thể chỉ dựa vào kiểu trả về để phân biệt.
+
+**Ví dụ về Vi phạm Quy Tắc Overloading:**
+
+```java
+public class Example {
+
+    // Phương thức này không hợp lệ vì chỉ khác nhau về kiểu trả về
+    // và không khác nhau về danh sách tham số
+    public int getValue() {
+        return 5;
+    }
+
+    public double getValue() {
+        return 5.0;
+    }
+}
+```
+
+### Quy tắc về Overriding
+
+Khác với overloading, **overriding (ghi đè phương thức)** cho phép bạn định nghĩa lại một phương thức từ lớp cha trong lớp con. Các quy tắc cho overriding bao gồm:
+
+- **Tên phương thức phải giống nhau**.
+- **Danh sách tham số phải giống nhau**.
+- **Kiểu trả về**: Phương thức ghi đè phải có kiểu trả về tương tự hoặc là kiểu trả về con của kiểu trả về phương thức trong lớp cha.
+- **Quyền truy cập**: Phương thức ghi đè không được có mức quyền truy cập thấp hơn so với phương thức trong lớp cha.
+
+**Ví dụ về Overriding:**
+
+```java
+public class Animal {
+
+    // Phương thức trong lớp cha
+    public void makeSound() {
+        System.out.println("Animal makes a sound");
+    }
+}
+
+public class Dog extends Animal {
+
+    // Phương thức ghi đè trong lớp con
+    @Override
+    public void makeSound() {
+        System.out.println("Dog barks");
+    }
+}
+```
+
+Trong ví dụ này:
+- `Dog` ghi đè phương thức `makeSound` từ lớp `Animal` để cung cấp một triển khai cụ thể cho loài chó.
+
+Hy vọng điều này giúp bạn hiểu rõ hơn về overloading và overriding trong Java! Nếu bạn có thêm câu hỏi, đừng ngần ngại hỏi thêm.
