@@ -1,0 +1,61 @@
+Trong Java, ký hiệu `1L` được sử dụng để chỉ định rằng giá trị `1` là kiểu `long`. Đây là một phần của cú pháp để tạo một giá trị số nguyên có kiểu dữ liệu `long`, không phải `int`. 
+
+### Tại sao sử dụng `1L`?
+
+1. **Kiểu dữ liệu `long` so với `int`:**
+   - Trong Java, `int` là kiểu dữ liệu số nguyên 32-bit, trong khi `long` là kiểu dữ liệu số nguyên 64-bit. 
+   - Giá trị `1` mặc định được coi là kiểu `int` nếu không có hậu tố. Nếu bạn cần sử dụng một giá trị lớn hơn phạm vi của `int` (tức là lớn hơn `2^31-1` hoặc nhỏ hơn `-2^31`), bạn phải sử dụng `long`.
+
+2. **Khi nào cần dùng `long`:**
+   - Khi bạn làm việc với các giá trị số nguyên mà bạn biết rằng chúng có thể vượt quá phạm vi của `int` hoặc khi kiểu dữ liệu của biến hoặc trường yêu cầu kiểu `long`.
+
+3. **Hậu tố `L`:**
+   - Sử dụng hậu tố `L` giúp Java biết rằng bạn đang muốn sử dụng kiểu `long` thay vì kiểu `int`. Nếu bạn không sử dụng hậu tố và giá trị nằm ngoài phạm vi của kiểu `int`, bạn có thể gặp lỗi biên dịch.
+
+### Ví dụ
+
+Dưới đây là một ví dụ đơn giản về việc sử dụng `L` để chỉ định kiểu `long`:
+
+```java
+public class Example {
+
+    public static void main(String[] args) {
+        int intValue = 1;  // Đây là giá trị kiểu int
+        long longValue = 1L;  // Đây là giá trị kiểu long
+
+        // Chúng ta có thể thấy rằng intValue có kiểu int và longValue có kiểu long
+        System.out.println("intValue: " + intValue);
+        System.out.println("longValue: " + longValue);
+    }
+}
+```
+
+### Sử dụng trong Context của `Student`
+
+Khi bạn tạo một đối tượng `Student` với `1L`, điều này chỉ định rằng giá trị `1` được cung cấp cho tham số `id` của phương thức khởi tạo `Student` là kiểu `long`. Điều này rất quan trọng nếu lớp `Student` định nghĩa tham số `id` là kiểu `long`.
+
+```java
+public class Student {
+    private Long id;
+    private String name;
+    private String email;
+    private LocalDate birthDate;
+    private int age;
+
+    // Constructor
+    public Student(Long id, String name, String email, LocalDate birthDate, int age) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.birthDate = birthDate;
+        this.age = age;
+    }
+
+    // Getters and Setters
+    // ...
+}
+```
+
+Trong ví dụ trên, constructor của lớp `Student` yêu cầu một tham số `Long`. Vì vậy, khi bạn truyền `1L` làm giá trị cho `id`, bạn đang đảm bảo rằng giá trị này tương thích với kiểu `Long` trong lớp `Student`.
+
+Nếu bạn sử dụng `1` thay vì `1L` trong trường hợp này, Java sẽ tự động chuyển đổi từ `int` sang `long` (tức là boxing), nhưng việc sử dụng `1L` rõ ràng hơn và giúp tránh bất kỳ sự nhầm lẫn nào về kiểu dữ liệu.
