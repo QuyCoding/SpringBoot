@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @RestController
 @RequestMapping(path = "api/v1/student")
@@ -12,6 +13,11 @@ public class StudentController {
     
     private final StudentService studentService;
     
+    // @Autowired: Đánh dấu một trường là một phụ thuộc của Spring.
+    // Spring sẽ tự động tiêm các phụ thuộc này khi tạo bean.
+    // Trong trường hợp này, Spring sẽ tự động tiêm một đối tượng StudentService vào StudentController.
+    // Không cần dùng @Autowired nếu chỉ có một constructor vì Spring sẽ tự động tiêm.
+    @Autowired
     public StudentController(StudentService studentService) {
         this.studentService = studentService;
     }

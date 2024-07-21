@@ -1,0 +1,134 @@
+Cơ chế quét thành phần (component scanning) trong Spring Framework là một quá trình tự động tìm kiếm và đăng ký các bean từ các lớp được chú thích với các annotation như `@Component`, `@Service`, `@Repository`, và `@Controller`. Điều này giúp giảm bớt công việc cấu hình thủ công các bean trong file cấu hình XML hoặc các file cấu hình Java.
+
+### Cách hoạt động của Component Scanning
+
+1. **Khai báo package cần quét**:
+   Bạn chỉ định các package mà Spring nên quét để tìm kiếm các bean. Điều này thường được thực hiện trong file cấu hình chính của ứng dụng hoặc bằng cách sử dụng annotation `@ComponentScan`.
+
+2. **Annotation các lớp**:
+   Bạn đánh dấu các lớp cần được Spring quản lý bằng các annotation như `@Component`, `@Service`, `@Repository`, và `@Controller`.
+
+3. **Quét và đăng ký bean**:
+   Khi ứng dụng khởi động, Spring sẽ quét các package được chỉ định để tìm các lớp có các annotation này và tự động đăng ký chúng như là các bean trong context Spring.
+
+### Ví dụ về Component Scanning
+
+Giả sử bạn có cấu trúc dự án sau:
+```
+com.example.demo
+│
+├── Application.java
+└── student
+    ├── Student.java
+    ├── StudentRepository.java
+    ├── StudentService.java
+    └── StudentController.java
+```
+
+#### Các lớp với annotation
+
+```java
+// Student.java
+package com.example.demo.student;
+
+public class Student {
+    private Long id;
+    private String name;
+    private String email;
+    private LocalDate dob;
+    private Integer age;
+    // constructors, getters, setters
+}
+
+// StudentRepository.java
+package com.example.demo.student;
+
+import org.springframework.stereotype.Repository;
+
+@Repository
+public class StudentRepository {
+    // data access methods
+}
+
+// StudentService.java
+package com.example.demo.student;
+
+import org.springframework.stereotype.Service;
+
+@Service
+public class StudentService {
+    // business logic methods
+}
+
+// StudentController.java
+package com.example.demo.student;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+
+@RestController
+@RequestMapping(path = "api/v1/student")
+public class StudentController {
+    private final StudentService studentService;
+
+    @Autowired
+    public StudentController(StudentService studentService) {
+        this.studentService = studentService;
+    }
+
+    @GetMapping
+    public List<Student> getStudents() {
+        return studentService.getAllStudents();
+    }
+}
+```
+
+#### Khai báo Component Scanning trong cấu hình Spring Boot
+
+```java
+// Application.java
+package com.example.demo;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class Application {
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
+    }
+}
+```
+
+Annotation `@SpringBootApplication` trên lớp `Application` bao gồm `@ComponentScan` theo mặc định, nó sẽ quét tất cả các package con dưới package gốc `com.example.demo`.
+
+#### Tùy chỉnh Component Scanning
+
+Nếu bạn muốn tùy chỉnh các package được quét, bạn có thể sử dụng annotation `@ComponentScan`:
+
+```java
+// Application.java
+package com.example.demo;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
+
+@SpringBootApplication
+@ComponentScan(basePackages = {"com.example.demo.student", "com.example.demo.other"})
+public class Application {
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
+    }
+}
+```
+
+### Tóm tắt
+
+- **Component Scanning**: Là quá trình tự động tìm và đăng ký các bean từ các lớp được chú thích với các annotation như `@Component`, `@Service`, `@Repository`, và `@Controller`.
+- **`@ComponentScan`**: Được sử dụng để chỉ định các package cần quét.
+- **Các annotation như `@Component`, `@Service`, `@Repository`, `@Controller`**: Đánh dấu các lớp để Spring biết đó là các bean cần được quản lý.
+- **`@SpringBootApplication`**: Bao gồm `@ComponentScan` theo mặc định và quét tất cả các package con của package gốc.

@@ -1,0 +1,146 @@
+Trong Spring Framework, các annotation `@Autowired`, `@Component`, và `@Service` đều được sử dụng để quản lý các bean và dependency injection, giúp ứng dụng dễ dàng hơn trong việc cấu hình và quản lý các thành phần. Dưới đây là giải thích chi tiết về từng annotation và cách sử dụng chúng.
+
+### `@Component`
+
+`@Component` là một annotation dùng để khai báo một lớp là một bean (thành phần) trong Spring. Spring sẽ tự động phát hiện và tạo bean từ các lớp được đánh dấu với `@Component` thông qua cơ chế quét thành phần (component scanning).
+
+#### Sử dụng
+
+```java
+import org.springframework.stereotype.Component;
+
+@Component
+public class MyComponent {
+    public void doSomething() {
+        System.out.println("Doing something...");
+    }
+}
+```
+
+Khi Spring Boot khởi động, nó sẽ quét các lớp và tìm các lớp được đánh dấu bằng `@Component` để tạo và quản lý bean tương ứng.
+
+### `@Service`
+
+`@Service` là một dạng chuyên biệt của `@Component`, được sử dụng để khai báo rằng lớp này chứa các logic nghiệp vụ (business logic). Mặc dù về mặt kỹ thuật, `@Service` chỉ là một alias của `@Component`, nó giúp làm cho mục đích của lớp rõ ràng hơn.
+
+#### Sử dụng
+
+```java
+import org.springframework.stereotype.Service;
+
+@Service
+public class MyService {
+    public void performService() {
+        System.out.println("Performing service...");
+    }
+}
+```
+
+Lớp `MyService` được khai báo là một bean và Spring sẽ quản lý nó.
+
+### `@Autowired`
+
+`@Autowired` được sử dụng để tự động tiêm (inject) các dependency vào trong một bean. Spring sẽ tự động tìm và tiêm bean phù hợp vào các biến hoặc phương thức được đánh dấu bằng `@Autowired`.
+
+#### Sử dụng
+
+**Tiêm qua biến**
+
+```java
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+@Component
+public class MyComponent {
+    
+    @Autowired
+    private MyService myService;
+    
+    public void doSomething() {
+        myService.performService();
+    }
+}
+```
+
+**Tiêm qua constructor**
+
+```java
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+@Component
+public class MyComponent {
+    
+    private final MyService myService;
+    
+    @Autowired
+    public MyComponent(MyService myService) {
+        this.myService = myService;
+    }
+    
+    public void doSomething() {
+        myService.performService();
+    }
+}
+```
+
+**Tiêm qua setter**
+
+```java
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+@Component
+public class MyComponent {
+    
+    private MyService myService;
+    
+    @Autowired
+    public void setMyService(MyService myService) {
+        this.myService = myService;
+    }
+    
+    public void doSomething() {
+        myService.performService();
+    }
+}
+```
+
+### Tóm tắt
+
+- **`@Component`**: Đánh dấu một lớp là một bean do Spring quản lý.
+- **`@Service`**: Là một alias của `@Component`, dùng để khai báo một lớp chứa logic nghiệp vụ.
+- **`@Autowired`**: Được sử dụng để tự động tiêm dependency vào các bean.
+
+### Ví dụ cụ thể
+
+```java
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+
+@Component
+public class AppRunner implements CommandLineRunner {
+    
+    private final MyService myService;
+    
+    @Autowired
+    public AppRunner(MyService myService) {
+        this.myService = myService;
+    }
+    
+    @Override
+    public void run(String... args) throws Exception {
+        myService.performService();
+    }
+}
+
+@Service
+public class MyService {
+    public void performService() {
+        System.out.println("Service is being performed.");
+    }
+}
+```
+
+Trong ví dụ này, `AppRunner` là một `Component` được chạy khi ứng dụng khởi động, và nó sử dụng `MyService` thông qua dependency injection bằng `@Autowired`. `MyService` là một `Service` chứa logic nghiệp vụ và được Spring quản lý như một bean.

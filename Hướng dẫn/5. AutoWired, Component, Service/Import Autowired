@@ -1,0 +1,74 @@
+Thông báo "Remove Unnecessary @Autowired" trong Visual Studio Code với Spring Boot là một đề xuất từ VS Code hoặc từ extension Spring Boot để thông báo rằng trong các phiên bản Spring Boot hiện đại, annotation `@Autowired` không cần thiết trên constructor khi sử dụng constructor injection.
+
+### Giải thích chi tiết
+
+Trong Spring Framework, khi có một constructor duy nhất trong một bean, Spring tự động sử dụng constructor đó để tiêm các dependency mà không cần annotation `@Autowired`. Điều này được gọi là "constructor injection" và là cách khuyến nghị để tiêm dependency trong Spring Boot.
+
+### Ví dụ không cần `@Autowired` trên constructor
+
+Bạn có thể an tâm bỏ annotation `@Autowired` trên constructor và Spring vẫn sẽ tiêm `StudentService` vào `StudentController`.
+
+#### Trước khi bỏ `@Autowired`
+
+```java
+package com.example.demo.Student;
+
+import java.util.List;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;  // Đảm bảo import này tồn tại
+
+@RestController
+@RequestMapping(path = "api/v1/student")
+public class StudentController {
+    
+    private final StudentService studentService;
+    
+    @Autowired  // Đảm bảo rằng @Autowired được nhận diện đúng cách
+    public StudentController(StudentService studentService) {
+        this.studentService = studentService;
+    }
+    
+    @GetMapping
+    public List<Student> getStudents() {
+        return studentService.getStudents();
+    }
+}
+```
+
+#### Sau khi bỏ `@Autowired`
+
+```java
+package com.example.demo.Student;
+
+import java.util.List;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping(path = "api/v1/student")
+public class StudentController {
+    
+    private final StudentService studentService;
+    
+    public StudentController(StudentService studentService) {
+        this.studentService = studentService;
+    }
+    
+    @GetMapping
+    public List<Student> getStudents() {
+        return studentService.getStudents();
+    }
+}
+```
+
+### Tóm tắt
+
+- **`@Autowired` không cần thiết trên constructor**: Trong Spring Boot, nếu bạn có một constructor duy nhất, Spring sẽ tự động tiêm các dependency mà không cần `@Autowired`.
+- **Vẫn cần `@Autowired` trên các field hoặc setter**: Nếu bạn sử dụng field injection hoặc setter injection, `@Autowired` vẫn cần thiết.
+
+Bạn có thể an tâm bỏ `@Autowired` trên constructor nếu bạn đang sử dụng constructor injection, và đó là cách khuyến nghị để giữ mã nguồn sạch sẽ và dễ hiểu.
