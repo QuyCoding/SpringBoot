@@ -1,7 +1,7 @@
 //1.Đây là nơi bạn khai báo package cho lớp Student và import lớp LocalDate để sử dụng cho ngày tháng.
 package com.example.demo.Student;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.time.LocalDate;
 
 @Entity
@@ -17,7 +17,6 @@ public class Student {
         strategy = GenerationType.SEQUENCE,
         generator = "student_sequence"
     )
-
     private Long id;
     private String name;
     private String email;

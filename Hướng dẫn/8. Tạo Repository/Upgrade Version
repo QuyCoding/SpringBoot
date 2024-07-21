@@ -1,0 +1,9 @@
+Xóa Cache Maven:
+    mvn clean
+    mvn dependency:purge-local-repository
+
+Biên Dịch và Chạy Lại Ứng Dụng:
+    mvn install
+    mvn spring-boot:run
+    
+//Các Anotion về JPA và Hibernate không cần import ở file Pom.xml
