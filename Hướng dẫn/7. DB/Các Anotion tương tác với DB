@@ -1,0 +1,72 @@
+Đoạn mã này liên quan đến việc định nghĩa một thực thể JPA (Java Persistence API) trong Spring Boot và Hibernate. Các chú thích (annotations) này được sử dụng để cấu hình cách Hibernate sẽ quản lý khóa chính (primary key) của thực thể. Chúng ta sẽ đi qua từng chú thích để hiểu rõ ý nghĩa và cách sử dụng của chúng.
+
+### 1. `@Id`
+
+```java
+@Id
+```
+
+- **Ý nghĩa**: Đánh dấu trường này là khóa chính của thực thể. Hibernate sẽ sử dụng trường này để nhận diện duy nhất mỗi thực thể trong bảng cơ sở dữ liệu.
+
+### 2. `@SequenceGenerator`
+
+```java
+@SequenceGenerator(
+    name = "student_sequence",
+    sequenceName = "student_sequence",
+    allocationSize = 1
+)
+```
+
+- **Ý nghĩa**: Định nghĩa một bộ sinh số (sequence generator) cho khóa chính.
+- **name**: Tên của bộ sinh số, sẽ được sử dụng trong `@GeneratedValue`.
+- **sequenceName**: Tên của sequence trong cơ sở dữ liệu PostgreSQL. Hibernate sẽ tạo sequence này nếu nó chưa tồn tại.
+- **allocationSize**: Số lượng giá trị được Hibernate lấy trước từ sequence để sử dụng cho các thực thể mới. Giá trị mặc định là 50, nhưng ở đây được đặt thành 1 để mỗi lần chỉ lấy một giá trị.
+
+### 3. `@GeneratedValue`
+
+```java
+@GeneratedValue(
+    strategy = GenerationType.SEQUENCE,
+    generator = "student_sequence"
+)
+```
+
+- **Ý nghĩa**: Định nghĩa cách Hibernate sẽ tạo giá trị cho trường khóa chính.
+- **strategy**: Chiến lược sinh giá trị cho khóa chính. Ở đây sử dụng `GenerationType.SEQUENCE`, có nghĩa là Hibernate sẽ sử dụng một sequence trong cơ sở dữ liệu để sinh giá trị.
+- **generator**: Tên của sequence generator đã được định nghĩa bởi `@SequenceGenerator`. Giá trị này phải khớp với tên của bộ sinh số đã được định nghĩa.
+
+### Các trường còn lại
+
+```java
+private String name;
+private String email;
+private LocalDate dob;
+private Integer age;
+```
+
+- **name**: Tên của sinh viên, kiểu dữ liệu là `String`.
+- **email**: Email của sinh viên, kiểu dữ liệu là `String`.
+- **dob (date of birth)**: Ngày sinh của sinh viên, kiểu dữ liệu là `LocalDate`.
+- **age**: Tuổi của sinh viên, kiểu dữ liệu là `Integer`.
+
+### Mô tả chi tiết với ví dụ
+
+Giả sử bạn có một bảng `students` trong cơ sở dữ liệu PostgreSQL, và bạn muốn Hibernate quản lý các thực thể của bảng này. Khi bạn thêm một sinh viên mới vào cơ sở dữ liệu, bạn muốn Hibernate tự động sinh giá trị cho trường `id` bằng cách sử dụng một sequence.
+
+```sql
+CREATE SEQUENCE student_sequence START WITH 1 INCREMENT BY 1;
+```
+
+Với đoạn mã trên, khi bạn thêm một sinh viên mới, Hibernate sẽ thực hiện như sau:
+
+1. **Sinh giá trị cho `id`**:
+    - Hibernate sẽ gọi sequence `student_sequence` để lấy giá trị tiếp theo.
+    - Giá trị này sẽ được gán cho trường `id` của thực thể `Student`.
+
+2. **Lưu thực thể vào cơ sở dữ liệu**:
+    - Hibernate sẽ lưu thực thể `Student` vào bảng `students` với `id` đã được sinh ra.
+
+### Tổng kết
+
+Các chú thích `@Id`, `@SequenceGenerator`, và `@GeneratedValue` được sử dụng để định nghĩa và quản lý khóa chính của thực thể trong JPA/Hibernate. Chúng cho phép bạn kiểm soát cách giá trị của khóa chính được sinh ra và sử dụng một sequence trong cơ sở dữ liệu để tạo các giá trị duy nhất cho các thực thể mới.

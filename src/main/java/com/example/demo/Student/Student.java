@@ -1,10 +1,23 @@
 //1.Đây là nơi bạn khai báo package cho lớp Student và import lớp LocalDate để sử dụng cho ngày tháng.
 package com.example.demo.Student;
+
+import javax.persistence.*;
 import java.time.LocalDate;
 
+@Entity
+@Table(name = "student")
 public class Student {
-    //2.Các trường (fields) của lớp:
-    //Định nghĩa các thuộc tính của sinh viên bao gồm id, name, email, dob (ngày sinh), và age.
+    @Id
+    @SequenceGenerator(
+        name = "student_sequence",
+        sequenceName = "student_sequence",
+        allocationSize = 1
+    )
+    @GeneratedValue(
+        strategy = GenerationType.SEQUENCE,
+        generator = "student_sequence"
+    )
+
     private Long id;
     private String name;
     private String email;

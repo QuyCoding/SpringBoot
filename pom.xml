@@ -39,7 +39,20 @@
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
-			<scope>runtime</scope>
+		</dependency>
+		
+		<!-- Maven -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<version>5.6.4.Final</version> <!-- Thay version phù hợp -->
+		</dependency>
+		
+		<!--  dùng để dùng các anotion tương tác với DB như Entity  -->
+		<dependency>
+			<groupId>javax.persistence</groupId>
+			<artifactId>javax.persistence-api</artifactId>
+			<version>2.2</version> <!-- Hoặc phiên bản tương ứng -->
 		</dependency>
 
 		<dependency>

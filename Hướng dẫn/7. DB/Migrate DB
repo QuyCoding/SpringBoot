@@ -1,0 +1,16 @@
+1. Mặc định khi chạy 
+    mvn clean package  
+    mvn spring-boot:run 
+    
+DB sẻ tự động tạo ra 1 tabele mới dựa vào cấu hình 
+
+create sequence student_sequence start 1 increment 1
+
+create table student ( id int8 not null,
+age int4,
+dob date,
+email varchar(255),
+name varchar(255),
+primary key (id)
+)
+
