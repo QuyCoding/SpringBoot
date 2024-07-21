@@ -1,0 +1,22 @@
+Trong Maven, phần cấu hình dependency này được sử dụng để chỉ ra rằng dự án của bạn cần sử dụng thư viện PostgreSQL JDBC Driver (`postgresql`) như một dependency runtime.
+
+**Giải thích từng phần:**
+
+- `<dependency>`: Đây là phần bắt đầu của một dependency trong file `pom.xml`, trong đó bạn khai báo các thư viện mà dự án của bạn sử dụng.
+  
+- `<groupId>org.postgresql</groupId>`: Đây là groupId của thư viện PostgreSQL JDBC Driver. Maven sử dụng `groupId` để nhận diện duy nhất một dependency.
+
+- `<artifactId>postgresql</artifactId>`: Đây là `artifactId` của thư viện PostgreSQL JDBC Driver. `artifactId` xác định tên của artifact (file JAR) bạn muốn sử dụng.
+
+- `<scope>runtime</scope>`: Đây là phần quan trọng cần giải thích. `scope` xác định phạm vi mà dependency sẽ được sử dụng trong dự án của bạn. Trong trường hợp này:
+  - `runtime`: Cho biết rằng thư viện này chỉ cần được sử dụng khi dự án của bạn đang chạy (runtime), chứ không cần thiết khi biên dịch (compile time) hoặc khi đóng gói (package).
+
+**Tại sao lại cần khai báo dependency như vậy?**
+
+- Maven sẽ tự động tải về các dependency mà dự án của bạn cần từ các kho lưu trữ (repository) mặc định hoặc được cấu hình.
+- Khi bạn khai báo dependency với `scope` là `runtime`, Maven sẽ chỉ bao gồm thư viện này khi bạn chạy ứng dụng. Điều này hữu ích khi bạn không muốn đưa thư viện vào trong file JAR hoặc WAR của ứng dụng, mà chỉ cần sử dụng khi ứng dụng đang chạy trên máy chủ.
+- Điều này giúp giảm kích thước của gói phần mềm khi phân phối và làm cho quản lý dependency dễ dàng hơn.
+
+**Tóm lại**, `<dependency>` này trong Maven cho biết rằng dự án cần sử dụng PostgreSQL JDBC Driver (`postgresql`) như một dependency runtime, tức là nó chỉ cần được tải và sử dụng khi ứng dụng đang chạy, không cần thiết khi biên dịch hoặc đóng gói ứng dụng.
+
+
