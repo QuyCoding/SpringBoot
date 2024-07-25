@@ -1,0 +1,62 @@
+Trong Spring Boot và JPA
+`@Transient`. Annotation này được sử dụng để đánh dấu một thuộc tính của entity không nên được ánh xạ vào cơ sở dữ liệu. Điều này có nghĩa là thuộc tính đó sẽ không được lưu hoặc truy vấn từ cơ sở dữ liệu.
+
+Dưới đây là cách sử dụng `@Transient`:
+
+```java
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Transient;
+
+@Entity
+public class User {
+    @Id
+    private Long id;
+    private String name;
+    
+    @Transient
+    private int age;
+
+    // getter và setter
+}
+```
+
+Trong ví dụ trên:
+- `id` và `name` là các thuộc tính sẽ được ánh xạ vào cơ sở dữ liệu.
+- `age` là thuộc tính được đánh dấu với `@Transient`, nghĩa là nó sẽ không được lưu vào cơ sở dữ liệu khi đối tượng `User` được persist và cũng không được truy vấn từ cơ sở dữ liệu khi đối tượng `User` được load.
+
+### Khi nào nên sử dụng `@Transient`?
+- Khi bạn có một thuộc tính chỉ được sử dụng cho logic ứng dụng và không cần lưu trữ trong cơ sở dữ liệu.
+- Khi bạn có một thuộc tính tính toán hoặc tạm thời, ví dụ như thuộc tính chỉ tồn tại trong quá trình chạy của ứng dụng.
+
+### Ví dụ chi tiết
+Giả sử bạn có một thuộc tính tạm thời `fullName` được kết hợp từ `firstName` và `lastName`:
+
+```java
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Transient;
+
+@Entity
+public class User {
+    @Id
+    private Long id;
+    private String firstName;
+    private String lastName;
+    
+    @Transient
+    private String fullName;
+
+    // getter và setter
+
+    public String getFullName() {
+        return firstName + " " + lastName;
+    }
+}
+```
+
+Trong ví dụ này:
+- `firstName` và `lastName` sẽ được lưu vào cơ sở dữ liệu.
+- `fullName` là thuộc tính tính toán và sẽ không được lưu vào cơ sở dữ liệu. Mỗi khi gọi `getFullName()`, nó sẽ trả về kết quả kết hợp của `firstName` và `lastName`.
+
+Nếu bạn có thêm câu hỏi hoặc cần thêm thông tin về bất kỳ khía cạnh nào khác, hãy cho tôi biết!
